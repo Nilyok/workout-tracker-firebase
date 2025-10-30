@@ -71,73 +71,51 @@ body.modal-open {
   backdrop-filter: blur(4px);
 }
 
-/* Optional: Modal transitions */
-.modal-overlay {
-  transition: opacity 0.3s ease-in-out;
-}
-
 /* Ensure modals have highest z-index */
 .fixed.inset-0.z-50 {
   z-index: 9999;
 }
 
-/* ===== BETTER MOBILE MODAL SUPPORT ===== */
-/* Ensure iframes are responsive */
-iframe {
-  max-width: 100%;
-  border: none;
+/* ===== FIXED MOBILE MODAL 343x343 ===== */
+@media (max-width: 640px) {
+  .mobile-modal-343,
+  .youtube-343,
+  .image-343 {
+    position: relative !important;
+    width: 343px !important;
+    height: 343px !important;
+    max-width: 343px !important;
+    max-height: 343px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    /* 👇 Position adjustments for mobile */
+    margin-left: 16px !important; /* 16px gap from left */
+    margin-top: 24px !important;  /* 24px gap from top */
+    margin-right: auto !important; /* push it away from right side */
+  }
+
+  .youtube-343 iframe {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .image-343 img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .modal-header-343 {
+    padding: 12px !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+  }
 }
 
-/* Better touch targets for mobile */
-@media (max-width: 640px) {
-  .modal-close-btn {
-    min-width: 44px;
-    min-height: 44px;
-  }
-  
-  /* Full screen modal on mobile */
-  .mobile-modal-fullscreen {
-    width: 100vw !important;
-    height: 100vh !important;
-    max-width: 100vw !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-    margin: 0 !important;
-  }
-  
-  /* Prevent any horizontal scrolling */
-  .fixed.inset-0 {
-    overflow: hidden;
-  }
-  
-  /* Ensure modal content doesn't overflow */
-  .modal-content {
-    max-height: 100vh;
-    overflow: auto;
-  }
-  
-  /* Force full screen for modal containers on mobile */
-  .modal-container-mobile {
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-  }
-  
-  /* Full screen video on mobile */
-  .video-modal-mobile {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-  }
-  
-  /* Full screen image on mobile */
-  .image-modal-mobile {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-  }
-}
 
 /* Safe area support for notched phones */
 @supports(padding: max(0px)) {
@@ -159,12 +137,30 @@ iframe {
   scrollbar-width: none;
 }
 
-/* Force full viewport sizing for mobile modals */
 @media (max-width: 640px) {
-  .mobile-full-viewport {
-    width: 100vw !important;
-    height: 100vh !important;
-    max-width: 100vw !important;
-    max-height: 100vh !important;
+  .modal-backdrop-mobile {
+    display: flex !important;
+    align-items: flex-start !important;   /* ✅ Push modal to top */
+    justify-content: flex-start !important; /* ✅ Align to left */
+    overflow-y: auto !important;
+    padding: 0 !important;
+    padding-top: env(safe-area-inset-top, 16px) !important;
+
+  }
+
+  /* Make sure modal respects margins now */
+  .mobile-modal-343,
+  .youtube-343,
+  .image-343 {
+    margin-top: 24px !important;
+    margin-left: 16px !important;
+    margin-right: auto !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Ensure container height doesn’t center vertically */
+  .fixed.inset-0.z-50 {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
   }
 }

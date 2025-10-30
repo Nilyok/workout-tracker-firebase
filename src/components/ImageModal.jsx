@@ -20,34 +20,34 @@ export default function ImageModal({ isOpen, onClose, imageUrl, exerciseName }) 
   if (!isOpen) return null;
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-0 sm:p-4 modal-container-mobile"
-      onClick={onClose}
-    >
+        <div 
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop-mobile"
+        onClick={onClose}
+        >
       <div 
-        className="relative w-full h-full flex items-center justify-center mobile-full-viewport"
+        className="relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 text-white hover:text-sky-300 text-3xl bg-black/80 rounded-full w-12 h-12 flex items-center justify-center shadow-lg border border-white/30"
+          className="absolute -top-12 -right-2 sm:top-4 sm:right-4 z-50 text-white hover:text-sky-300 text-2xl bg-black/80 rounded-full w-10 h-10 flex items-center justify-center shadow-lg border border-white/30"
         >
           ×
         </button>
         
-        {/* Image container - full screen on mobile */}
-        <div className="w-full h-full sm:w-auto sm:max-w-4xl sm:max-h-[90vh] bg-slate-800 sm:rounded-2xl overflow-hidden shadow-2xl flex flex-col image-modal-mobile mobile-full-viewport">
-          <div className="p-3 sm:p-4 bg-slate-900 border-b border-slate-700 flex-shrink-0">
-            <h3 className="text-white font-semibold text-center text-base sm:text-lg truncate">
+        {/* Image container - 343x343 on mobile */}
+        <div className="mobile-modal-343 image-343 sm:w-auto sm:max-w-4xl sm:max-h-[80vh] sm:h-auto bg-slate-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+          <div className="modal-header-343 sm:p-4 bg-slate-900 border-b border-slate-700 flex-shrink-0">
+            <h3 className="text-white font-semibold text-center truncate">
               {exerciseName}
             </h3>
           </div>
-          <div className="flex-1 flex items-center justify-center p-2 sm:p-4 bg-black overflow-hidden">
+          <div className="flex-1 bg-black overflow-hidden">
             <img
               src={imageUrl}
               alt={exerciseName}
-              className="max-w-full max-h-full object-contain"
+              className="w-full h-full object-contain"
               onError={(e) => {
                 e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
               }}

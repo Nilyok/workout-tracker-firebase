@@ -28,30 +28,30 @@ export default function YouTubeModal({ isOpen, onClose, videoUrl, exerciseName }
   const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : null;
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-0 sm:p-4 modal-container-mobile"
-      onClick={onClose}
-    >
+        <div 
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop-mobile"
+        onClick={onClose}
+        >
       <div 
-        className="relative w-full h-full flex items-center justify-center mobile-full-viewport"
+        className="relative"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button - fixed position for mobile */}
+        {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 text-white hover:text-sky-300 text-3xl bg-black/80 rounded-full w-12 h-12 flex items-center justify-center shadow-lg border border-white/30"
+          className="absolute -top-12 -right-2 sm:top-4 sm:right-4 z-50 text-white hover:text-sky-300 text-2xl bg-black/80 rounded-full w-10 h-10 flex items-center justify-center shadow-lg border border-white/30"
         >
           ×
         </button>
         
-        {/* Video container - full screen on mobile */}
-        <div className="w-full h-full sm:w-[90vw] sm:h-[80vh] sm:max-w-4xl sm:max-h-[85vh] bg-slate-800 sm:rounded-2xl overflow-hidden shadow-2xl flex flex-col video-modal-mobile mobile-full-viewport">
-          <div className="p-3 sm:p-4 bg-slate-900 border-b border-slate-700 flex-shrink-0">
-            <h3 className="text-white font-semibold text-center text-base sm:text-lg truncate">
+        {/* Video container - 343x343 on mobile */}
+        <div className="mobile-modal-343 youtube-343 sm:w-[560px] sm:h-[315px] sm:max-w-none sm:max-h-none bg-slate-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+          <div className="modal-header-343 sm:p-4 bg-slate-900 border-b border-slate-700 flex-shrink-0">
+            <h3 className="text-white font-semibold text-center truncate">
               {exerciseName}
             </h3>
           </div>
-          <div className="flex-1 w-full h-full bg-black">
+          <div className="flex-1 bg-black">
             {embedUrl ? (
               <iframe
                 src={embedUrl}
@@ -62,7 +62,7 @@ export default function YouTubeModal({ isOpen, onClose, videoUrl, exerciseName }
                 title={exerciseName}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-white p-4 text-center">
+              <div className="w-full h-full flex items-center justify-center text-white p-4 text-center text-sm">
                 Invalid YouTube URL
               </div>
             )}
