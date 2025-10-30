@@ -10,7 +10,7 @@ import { applyTheme, getTheme } from './utils/theme'
 import AuthProvider, { useAuth } from './utils/authProvider.jsx'
 import { auth } from './firebase'
 import { signOut } from 'firebase/auth'
-import { loadWorkouts, saveWorkouts } from './utils/db'
+import { loadWorkouts, saveWorkouts, listenToWorkouts } from './utils/db'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Admin from './pages/Admin'
@@ -21,6 +21,14 @@ function AppShell() {
   const { user } = useAuth()
   const [selectedDay, setSelectedDay] = useState(dayList[0])
   const [selectedProfile, setSelectedProfile] = useState('Magnum')
+  const [tracked, setTracked] = useState([]);
+    // 👇 listen in real time for user's tracked workouts
+  useEffect(() => {
+    if (!user) return;
+    const unsub = listenToWorkouts(user.uid, setTracked);
+    return () => unsub(); // cleanup on unmount
+  }, [user]);
+
 
   // helper: merge saved state with defaults so we don't lose fields like videoUrl
   function mergeWithDefaults(saved) {
@@ -145,7 +153,7 @@ function AppShell() {
           <div className="card p-5">
             <h2 className="text-xl font-bold mb-2 flex items-center gap-2"><BarChart3 className="w-5 h-5" /> Progress (example)</h2>
             <p className="text-sm text-slate-300 mb-4">Pick an exercise to see trends.</p>
-            <ProgressChart state={state} />
+            <ProgressChart state={state} tracked={tracked} />
           </div>
           <div className="card p-5">
             <h2 className="text-xl font-bold mb-2">Notes</h2>
