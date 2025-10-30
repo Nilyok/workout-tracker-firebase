@@ -118,8 +118,8 @@ body.modal-open {
   .youtube-343,
   .image-343 {
     position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
+    top: 30% !important;
+    left: 47% !important;
     transform: translate(-50%, -50%) !important;
     width: 343px !important;
     height: 343px !important;
