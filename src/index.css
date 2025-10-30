@@ -64,6 +64,9 @@
 /* Prevent body scroll when modal is open */
 body.modal-open {
   overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 /* Smooth backdrop */
@@ -76,34 +79,82 @@ body.modal-open {
   z-index: 9999;
 }
 
-/* ===== FIXED MOBILE MODAL 343x343 ===== */
+/* ===== FIXED MOBILE MODAL - CENTERED IN VIEWPORT ===== */
 @media (max-width: 640px) {
-  .mobile-modal-343,
-  .youtube-343,
-  .image-343 {
-    position: relative !important;
-    width: 343px !important;
-    height: 343px !important;
-    max-width: 343px !important;
-    max-height: 343px !important;
-    border-radius: 12px !important;
-    overflow: hidden !important;
+  /* --- Make modal backdrop fixed to viewport --- */
+  .modal-backdrop-mobile {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-
-    /* 👇 Position adjustments for mobile */
-    margin-left: 16px !important; /* 16px gap from left */
-    margin-top: 24px !important;  /* 24px gap from top */
-    margin-right: auto !important; /* push it away from right side */
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(4px) !important;
+    z-index: 9999 !important;
+    overflow: hidden !important;
+    touch-action: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
+    .modal-backdrop-mobile .relative {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-backdrop-mobile .absolute {
+    position: absolute;
+  }
+
+  /* --- Modal container stays locked in center of viewport --- */
+  .mobile-modal-343,
+  .youtube-343,
+  .image-343 {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 343px !important;
+    height: 343px !important;
+    max-width: 90vw !important;
+    max-height: 90vw !important;
+    border-radius: 16px !important;
+    background: #0f172a !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Ensure the parent container doesn't affect positioning */
+  .fixed.inset-0.z-50 {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Adjust image and video scaling */
+  .image-343 img,
   .youtube-343 iframe {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .image-343 img {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
@@ -116,6 +167,21 @@ body.modal-open {
   }
 }
 
+/* Desktop styles */
+@media (min-width: 641px) {
+  .mobile-modal-343,
+  .youtube-343,
+  .image-343 {
+    width: auto !important;
+    height: auto !important;
+    max-width: 90vw !important;
+    max-height: 90vh !important;
+    position: relative !important;
+    transform: none !important;
+    top: auto !important;
+    left: auto !important;
+  }
+}
 
 /* Safe area support for notched phones */
 @supports(padding: max(0px)) {
@@ -137,30 +203,12 @@ body.modal-open {
   scrollbar-width: none;
 }
 
-@media (max-width: 640px) {
-  .modal-backdrop-mobile {
-    display: flex !important;
-    align-items: flex-start !important;   /* ✅ Push modal to top */
-    justify-content: flex-start !important; /* ✅ Align to left */
-    overflow-y: auto !important;
-    padding: 0 !important;
-    padding-top: env(safe-area-inset-top, 16px) !important;
+/* Ensure no parent transforms affect fixed positioning */
+html, body {
+  transform: none !important;
+}
 
-  }
-
-  /* Make sure modal respects margins now */
-  .mobile-modal-343,
-  .youtube-343,
-  .image-343 {
-    margin-top: 24px !important;
-    margin-left: 16px !important;
-    margin-right: auto !important;
-    margin-bottom: 24px !important;
-  }
-
-  /* Ensure container height doesn’t center vertically */
-  .fixed.inset-0.z-50 {
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-  }
+/* Ensure modal backdrop covers everything */
+.modal-backdrop-mobile {
+  transform: none !important;
 }
