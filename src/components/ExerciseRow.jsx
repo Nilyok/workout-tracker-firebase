@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { addWorkout } from "../firebase";
 import ImageModal from "./ImageModal";
-import YouTubeModal from "./YouTubeModal"; // 👈 Import YouTube modal
+import YouTubeModal from "./YouTubeModal";
+import { useAuth } from "../utils/authProvider";
 
-export default function ExerciseRow({ row, onChange, workoutDate }) {
+export default function ExerciseRow({ row, onChange, workoutDate, selectedProfile }) {
+  const { user } = useAuth(); // ✅ current signed-in user
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
@@ -13,7 +15,8 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
 
     if (completed) {
       const data = {
-        userId: "magnum",
+        userId: user?.uid || "guest", // ✅ use actual Firebase user or fallback
+        profileName: selectedProfile || user?.displayName || "Unknown",
         date: workoutDate || new Date().toISOString().split("T")[0],
         exercise: row.name,
         sets: row.sets ?? "",
@@ -33,7 +36,6 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
   }
 
   const handleChange = (field, value) => onChange({ [field]: value });
-
   const imageUrl = row.imageUrl || "https://via.placeholder.com/100x100?text=Workout";
 
   return (
@@ -41,11 +43,11 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
       <div className="px-2">
         {/* 💻 Desktop layout */}
         <div className="hidden md:grid row-grid">
+          {/* 🏋️ Exercise Name + Media Buttons */}
           <div className="hidden md:block col-span-4">
             <div className="font-medium flex items-center gap-2">
               <span>{row.name}</span>
 
-              {/* 🎥 Video link - Now opens modal */}
               {row.videoUrl && (
                 <button
                   onClick={() => setIsVideoModalOpen(true)}
@@ -55,7 +57,6 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
                 </button>
               )}
 
-              {/* 🖼️ Image link - Opens modal */}
               {imageUrl && (
                 <button
                   onClick={() => setIsImageModalOpen(true)}
@@ -67,6 +68,7 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
             </div>
           </div>
 
+          {/* Sets */}
           <div className="hidden md:block col-span-1 text-center">
             <input
               className="input text-center"
@@ -78,6 +80,7 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
             />
           </div>
 
+          {/* Reps */}
           <div className="hidden md:block col-span-1 text-center">
             <input
               className="input text-center"
@@ -87,6 +90,7 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
             />
           </div>
 
+          {/* Weight */}
           <div className="hidden md:block col-span-2">
             <input
               className="input text-center"
@@ -97,6 +101,7 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
             />
           </div>
 
+          {/* Completed checkbox */}
           <div className="hidden md:block col-span-1 text-center">
             <input
               className="checkbox"
@@ -106,6 +111,7 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
             />
           </div>
 
+          {/* Notes */}
           <div className="hidden md:block col-span-3">
             <input
               className="input"
@@ -121,29 +127,27 @@ export default function ExerciseRow({ row, onChange, workoutDate }) {
         <div className="md:hidden py-3">
           <div className="bg-slate-800/50 p-4 rounded-2xl mb-2 border border-slate-700/60 shadow-sm">
             <div className="flex items-center justify-between mb-3">
-              <div>
-                <p className="text-base flex items-center gap-2">
-                  <span>{row.name}</span>
+              <p className="text-base flex items-center gap-2">
+                <span>{row.name}</span>
 
-                  {row.videoUrl && (
-                    <button
-                      onClick={() => setIsVideoModalOpen(true)}
-                      className="text-sky-400 hover:underline text-sm"
-                    >
-                      Video
-                    </button>
-                  )}
+                {row.videoUrl && (
+                  <button
+                    onClick={() => setIsVideoModalOpen(true)}
+                    className="text-sky-400 hover:underline text-sm"
+                  >
+                    Video
+                  </button>
+                )}
 
-                  {imageUrl && (
-                    <button
-                      onClick={() => setIsImageModalOpen(true)}
-                      className="text-sky-400 hover:underline text-sm"
-                    >
-                      Image
-                    </button>
-                  )}
-                </p>
-              </div>
+                {imageUrl && (
+                  <button
+                    onClick={() => setIsImageModalOpen(true)}
+                    className="text-sky-400 hover:underline text-sm"
+                  >
+                    Image
+                  </button>
+                )}
+              </p>
 
               <label className="flex items-center gap-2 text-sm">
                 <input

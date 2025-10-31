@@ -148,7 +148,12 @@ function AppShell() {
       </header>
 
       <main className="container-app pb-24">
-        <DayCard day={selectedDay} data={dayData} onChange={updateDay} />
+          <DayCard
+          day={selectedDay}
+          data={dayData}
+          onChange={updateDay}
+          selectedProfile={selectedProfile} // ✅ pass profile down
+        />
         <section id="chart-section" className="mt-8 grid md:grid-cols-2 gap-6">
           <div className="card p-5">
             <h2 className="text-xl font-bold mb-2 flex items-center gap-2"><BarChart3 className="w-5 h-5" /> Progress (example)</h2>

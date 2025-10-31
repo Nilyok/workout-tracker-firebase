@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ExerciseRow from './ExerciseRow'
 import { Flame } from 'lucide-react'
 
-export default function DayCard({ day, data, onChange }) {
+export default function DayCard({ day, data, onChange, selectedProfile }) {
   const [workoutDate, setWorkoutDate] = useState(
     new Date().toISOString().split('T')[0]
   )
@@ -47,7 +47,8 @@ export default function DayCard({ day, data, onChange }) {
           <ExerciseRow
             key={idx}
             row={row}
-            workoutDate={workoutDate} // 👈 pass selected date
+            workoutDate={workoutDate}
+            selectedProfile={selectedProfile}  // ✅ NEW: pass profile to ExerciseRow
             onChange={(patch) => updateRow(idx, patch)}
           />
         ))}
